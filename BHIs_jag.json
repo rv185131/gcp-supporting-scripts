@@ -1,0 +1,12 @@
+{
+    "ICROffline":"icr offline event",
+    "EPSDecline": ", Approved: 0, CardNumber: ",
+    "failedIcarusLoad":"Failed to Load Icarus",
+    "heartbeatNotReceived": "DC has not received",
+    "heartbeatsNotSent": "Unable to Send Heartbeat Msg",
+    "icarusidle": "Icarus idle time is at",
+    "icrdown": "ICR down",
+    "startingProgram":"Started program",
+    "waitOnlineEvent":"Start WaitForSPOTOnlineEvent"
+}
+
