@@ -1,0 +1,7 @@
+# Ignore npm
+node_modules
+
+# Exclude generated files
+*.js
+*.js.map
+*.d.ts

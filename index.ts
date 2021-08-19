@@ -54,13 +54,13 @@ async function main() {
     {
         //Set the input log file to a BHIs one unless another one was specified.
         if (JSON_FILE == null) {
-            JSON_FILE = `BHIs_${LOG_TYPE}`;
+            JSON_FILE = `${LOG_TYPE}_BHIs`;
         }
         console.log(`Materialized View Name: ${MV_NAME}. INPUT JSON: ${JSON_FILE}`)
         const mvId = `${LOG_TYPE}_mv_${MV_NAME}`;
         const vId = `${LOG_TYPE}_v_`
         
-        await bqViews.createMaterializedViewJag(PROJECT, DATASET, mvId);
+        await bqViews.createMaterializedViewJag(PROJECT, DATASET, mvId, JSON_FILE);
         await bqViews.createAllViewsJag(PROJECT, DATASET,mvId, vId, JSON_FILE);
     }
 }
