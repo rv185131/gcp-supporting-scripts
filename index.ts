@@ -1,15 +1,16 @@
 import { Command } from 'commander';
 const program = new Command();
 
-import * as bqViews from './bqSetupViews';
+import * as bqViews from './bqSetup';
 
 //options.requiredOption('-v, --views <views>', 'Views', 'views');
 program
-  .option('-p, --project <project>', 'GCP Project')
-  .option('-d, --dataset <dataset>', 'BQ Dataset')
-  .option('-t, --logType <logType>', 'CFR Log Type') //jag/optic/eps/rfs
+  .requiredOption('-p, --project <project>', 'GCP Project')
+  .requiredOption('-d, --dataset <dataset>', 'BQ Dataset')
+  .requiredOption('-t, --logType <logType>', 'CFR Log Type') //jag/optic/eps/rfs
   .option('-i, --input_file <input_file>', 'Input JSON File')
-  .option('--mvName <mvName>','Custom Materialized View Name','BHIs');
+  .option('--mvName <mvName>','Custom Materialized View Name')
+  .option('--table <tableName>', 'Custom Table Name');
 
 program.parse(process.argv);
 const options = program.opts();
@@ -17,7 +18,8 @@ const options = program.opts();
 const PROJECT = options.project;
 const DATASET = options.dataset;
 const LOG_TYPE = options.logType;
-const MV_NAME = options.mvName;
+let MV_NAME = options.mvName;
+let TABLE_NAME = options.tableName;
 let JSON_FILE = options.input_file;
 const supportedLogTypes = ['jag', 'optic', 'eps', 'rfs'];
 
@@ -54,13 +56,28 @@ async function main() {
     {
         //Set the input log file to a BHIs one unless another one was specified.
         if (JSON_FILE == null) {
-            JSON_FILE = `${LOG_TYPE}_BHIs`;
+            JSON_FILE = `./BHIs/${LOG_TYPE}_BHIs`;
+        }
+        //Default table name should match 
+        if (TABLE_NAME == null) {
+            TABLE_NAME =`${LOG_TYPE}_logs`;
+        }
+        //Default MV name to BHIs
+        if (MV_NAME == null) {
+            MV_NAME ='BHIs';
         }
         console.log(`Materialized View Name: ${MV_NAME}. INPUT JSON: ${JSON_FILE}`)
         const mvId = `${LOG_TYPE}_mv_${MV_NAME}`;
         const vId = `${LOG_TYPE}_v_`
         
-        await bqViews.createMaterializedViewJag(PROJECT, DATASET, mvId, JSON_FILE);
-        await bqViews.createAllViewsJag(PROJECT, DATASET,mvId, vId, JSON_FILE);
+        if (LOG_TYPE=='jag') {
+            console.log(`CREATING JAG`);
+            await bqViews.createMaterializedViewJag(PROJECT, DATASET, mvId, JSON_FILE);
+            await bqViews.createAllViewsJag(PROJECT, DATASET,mvId, vId, JSON_FILE);
+        } else if (LOG_TYPE=='rfs') {
+            console.log(`CREATING RFS`);
+            await bqViews.createMaterializedViewRFS(PROJECT, DATASET, mvId, JSON_FILE);
+            //await bqViews.createAllViewsRFS(PROJECT, DATASET,mvId, vId, JSON_FILE);
+        }
     }
 }

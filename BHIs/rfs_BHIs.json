@@ -1,0 +1,17 @@
+{
+    "alarm":"Alarm =",
+    "bootup": "-----------------------------------------------------------------------------------------------",
+    "cancelKey":"\\'Cancel\\' key pressed",
+    "cancelPAP": "MGR : Pump - %, CancelPAP",
+    "fallback": "Fallback transaction",
+    "forceNotOK": "SwipeResult: FORCE_NOT_OK",
+    "helpKey": "\\'Help\\' key pressed",
+    "maintenance":"Server Lock State: LOCKED (MAINTENANCE)",
+    "pumpGroupOffline":"Pump group % OFFLINE ",
+    "pumpUnlock":"Pump - %,% Lock State: UNLOCK",
+    "serverStarted":"Server Started!",
+    "stuckTransaction":"",
+    "terminalOffline":"%TERMINAL %% offline",
+    "terminalOnline":"%TERMINAL %% online",
+    "volume":"total transaction: "
+}
